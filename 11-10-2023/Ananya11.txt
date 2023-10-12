@@ -1,0 +1,59 @@
+# Downloaded from: https://www.ebi.ac.uk/gxa/experiments/E-MTAB-4818/Results
+# Timestamp: 2023-10-03T05:06:30.304Z
+# Experiment accession: E-MTAB-4818
+# Transcription profiling by high throughput sequencing of tomato fruit at four developmental stages
+# Gene query: []
+# Results as shown on page
+	17 days post anthesis	39 days post anthesis	42 days post anthesis	52 days after anthesis
+Solyc07g054750.1				161
+Solyc09g025210.3	155			
+Solyc03g116200.2	139			
+Solyc05g051260.3	123			
+Solyc08g077910.3				105
+Solyc09g072560.3	88			
+Solyc08g080490.3	86			
+Solyc07g065330.3				65
+Solyc09g011150.1				59
+Solyc06g005770.1	58			
+Solyc02g083840.1				51
+Solyc04g025530.3				50
+Solyc06g051230.3				49
+Solyc08g065790.3	49			
+Solyc03g031880.3				46
+Solyc09g090150.3	45			
+Solyc03g005590.2	42			
+Solyc09g089950.1	36			
+Solyc10g012130.1	36			
+Solyc02g083730.3				30
+Solyc08g081440.2				27
+Solyc07g064210.2	26			
+Solyc02g086490.3	24			
+Solyc05g007040.1	23			
+Solyc07g054745.1				23
+Solyc08g074720.2				23
+Solyc09g084450.3	23			
+Solyc02g076830.1				22
+Solyc03g020035.1				22
+Solyc09g065260.2	21			
+Solyc09g014530.3	20			
+Solyc01g091320.3	18			
+Solyc01g099483.1				18
+Solyc11g012370.1	18			
+snoZ43				17
+Solyc01g067510.3	17			
+Solyc06g069730.3	17			
+Solyc12g010030.2		17		
+Solyc08g074940.3	16			
+Solyc10g012110.2	16			
+5_8S_rRNA				15
+Solyc12g008477.1				15
+Solyc04g077690.2	14			
+Solyc07g063690.1	14			
+SNOR75	13			
+Solyc10g005320.3		13		
+Solyc10g049230.1				13
+Solyc04g011750.3				12
+Solyc05g010580.3	12			
+Solyc09g083170.3	12	
+
+Analyzed the dataset, tried understanding various formats of input that are possible for gene expression prediction.		
