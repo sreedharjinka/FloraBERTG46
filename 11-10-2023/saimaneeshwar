@@ -1,0 +1,87 @@
+import os
+import pandas as pd
+import requests
+from transformers import BertTokenizer, BertForSequenceClassification
+from torch.utils.data import TensorDataset, DataLoader
+import torch.optim as optim
+import torch
+
+# Function to download files from the given URL
+def download_file(url, output_folder):
+    response = requests.get(url, stream=True)
+    file_name = os.path.join(output_folder, os.path.basename(url))
+    with open(file_name, 'wb') as file:
+        for chunk in response.iter_content(chunk_size=8192):
+            file.write(chunk)
+    return file_name
+
+# Assuming you have a function to preprocess your gene expression data and obtain sentences and labels
+def preprocess_gene_expression_data(gene_file_path, annot_file_path):
+    # Add your preprocessing logic here and return sentences and labels
+    # For example:
+    # sentences, labels = preprocess_function(gene_file_path, annot_file_path)
+    pass
+
+# Main function
+def main():
+    # Dataset information
+    dataset = [
+        {
+            'name': 'actinidia_chinensis',
+            'gene_link': 'https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-57/fasta/actinidia_chinensis/dna/Actinidia_chinensis.Red5_PS1_1.69.0.dna.toplevel.fa.gz',
+            'annot_link': 'https://ftp.ebi.ac.uk/ensemblgenomes/pub/plants/release-57/gff3/actinidia_chinensis/Actinidia_chinensis.Red5_PS1_1.69.0.57.gff3.gz'
+        }
+    ]
+
+    # Specify the folder where you want to save the downloaded files
+    output_folder = 'downloaded_files'
+    os.makedirs(output_folder, exist_ok=True)
+
+    # Loop through the dataset and download files
+    for data in dataset:
+        gene_file = download_file(data['gene_link'], output_folder)
+        annot_file = download_file(data['annot_link'], output_folder)
+        print(f"Downloaded files for: {data['name']}")
+        print(f"Gene file saved at: {gene_file}")
+        print(f"Annotation file saved at: {annot_file}")
+
+        # Preprocess downloaded files and obtain sentences and labels
+        sentences, labels = preprocess_gene_expression_data(gene_file, annot_file)
+
+        # Tokenize the input sentences
+        tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+        tokenized_inputs = tokenizer(sentences, padding=True, truncation=True, max_length=128, return_tensors='pt')
+
+        # Convert labels to tensor
+        labels_tensor = torch.tensor(labels, dtype=torch.float32)
+
+        # Create DataLoader for training data
+        dataset = TensorDataset(tokenized_inputs.input_ids, tokenized_inputs.attention_mask, labels_tensor)
+        train_loader = DataLoader(dataset, batch_size=32, shuffle=True)
+
+        # Load pre-trained BERT model for regression
+        model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=1)
+
+        # Define optimizer and loss function
+        optimizer = optim.AdamW(model.parameters(), lr=1e-5)
+        loss_function = torch.nn.MSELoss()
+
+        # Training loop
+        epochs = 3
+        for epoch in range(epochs):
+            model.train()
+            for batch in train_loader:
+                optimizer.zero_grad()
+                input_ids, attention_mask, target = batch
+                outputs = model(input_ids, attention_mask=attention_mask)
+                predictions = outputs.logits.squeeze(-1)  # Squeeze to remove the extra dimension
+                loss = loss_function(predictions, target)
+                loss.backward()
+                optimizer.step()
+
+        # Save the trained model if needed
+        # torch.save(model.state_dict(), 'gene_expression_model.pth')
+
+if __name__ == "__main__":
+    main()
+#trying to run the code 
